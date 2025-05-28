@@ -17,4 +17,6 @@ func (u *User) UserLogin(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func (u *User) RegisterUser(w http.ResponseWriter, r *http.Request)
+func (u *User) RegisterUser(w http.ResponseWriter, r *http.Request) {
+	return
+}
