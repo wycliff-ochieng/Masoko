@@ -1,10 +1,20 @@
 package migrate
 
+import "github.com/wycliff-ochieng/db"
+
 type User struct {
 	ID        int
 	FirstName string
 	LastName  string
 	Gender    string
+}
+
+type RegisterUserPayload struct {
+	ID        int
+	FirstName string
+	LastName  string
+	Email     string
+	Password  string
 }
 
 var Users = []*User{
@@ -24,3 +34,9 @@ func getNextUser() int {
 	lastUser := Users[len(Users)-1]
 	return lastUser.ID + 1
 }
+
+func (p *db.Postgrestore) GetUserByEmail(email string) (*User, error) {
+	row, err := p.db.Query()
+}
+
+func ScanRowIntoUsers()
