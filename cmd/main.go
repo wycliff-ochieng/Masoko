@@ -18,9 +18,9 @@ func main() {
 		log.Fatal("unable to connect to db", err)
 	}
 	if err := store.Init(); err != nil {
-		log.Fatal("[ERROOOOOOOR]")
+		fmt.Printf("Couldnt initialize %v", err)
 	}
 
-	server := api.NewAPIserver(":3000", store)
+	server := api.NewAPIserver(":9000", store)
 	server.Run()
 }
