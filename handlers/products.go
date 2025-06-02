@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -45,17 +46,16 @@ func (p *Product) GetProducts(w http.ResponseWriter, r *http.Request) {
 
 	p.l.Println("Handle GET products requests...")
 
-	pl := migrate.GetProducts()
-
-	d, err := json.Marshal(pl)
+	product, err := p.store.GetProducts()
 	if err != nil {
-		http.Error(w, "unable to decode to json", http.StatusInternalServerError)
+		fmt.Errorf("cant retrieve products %v", err)
 	}
-	w.Write(d)
+	WriteJSON(w, http.StatusOK, product)
+
 }
 
 func (p *Product) CreateProduct(w http.ResponseWriter, r *http.Request) error {
-	p.l.Println("Handle GetPRoduct from db")
+	p.l.Println("Handle POST PRoduct to db")
 
 	createproductreq := new(migrate.CreateProductReq)
 
