@@ -53,9 +53,40 @@ func (p *Postgrestore) CreateProductTable() error {
 }
 
 func (s *Postgrestore) CreateProduct(product *migrate.Product) error {
-	query := `INSERT INTO products (name, description, price) VALUES ($1, $2, $3) RETURNING id`
-	err := s.db.QueryRow(query, product.Name, product.Description, product.Price).Scan(&product.ID)
+	query := `INSERT INTO products (name, description, price ,stock , createdat, updatedat) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+	err := s.db.QueryRow(query, product.Name, product.Description, product.Price, product.Stock, product.CreatedAt, product.UpdatedAt).Scan(&product.ID)
 	return err
 }
 
 //func (P *Postgres) CrreateTransactionTable
+
+func (p *Postgrestore) GetProducts() ([]*migrate.Product, error) {
+	rows, err := p.db.Query(`SELECT id,name,price,description,stock,createdat,updatedat FROM products`)
+	if err != nil {
+		return nil, err
+	}
+
+	products := []*migrate.Product{}
+
+	for rows.Next() {
+		product, err := p.ScanIntoTable(rows)
+		if err != nil {
+			return nil, err
+		}
+
+		products = append(products, product)
+	}
+	return products, nil
+
+}
+
+func (p *Postgrestore) ScanIntoTable(rows *sql.Rows) (*migrate.Product, error) {
+	product := new(migrate.Product)
+
+	err := rows.Scan(&product.ID, &product.Name, &product.Price, &product.Description, &product.Stock, &product.CreatedAt, &product.UpdatedAt)
+
+	if err != nil {
+		return nil, err
+	}
+	return product, nil
+}
