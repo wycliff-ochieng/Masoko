@@ -26,6 +26,8 @@ func NewProduct(name string, price float64, description string, stock float64) *
 		Price:       price,
 		Description: description,
 		Stock:       stock,
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
 	}
 }
 
