@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -27,14 +28,29 @@ func (s *APIServer) Run() {
 
 	l := log.New(os.Stdout, "ECOMMERCE APPLICATION", log.LstdFlags)
 
-	uh := handlers.NewUser(l)
+	store, err := db.NewPostgrestore()
+	if err != nil {
+		//log.Fatal("couldn tconnect to db")
+		fmt.Println("Error connecting to database")
+	}
+
+	ph := handlers.NewProduct(l, store)
 
 	router := mux.NewRouter()
 
-	registerUserRouter := router.Methods("GET").Subrouter()
-	registerUserRouter.HandleFunc("/", uh.RegisterUser)
+	getRouter := router.Methods("GET").Subrouter()
+	getRouter.HandleFunc("/products", ph.GetProducts)
 
-	loginUserRouter := router.Methods("POST").Subrouter()
-	loginUserRouter.HandleFunc("/", uh.UserLogin)
+	postRouter := router.Methods("POST").Subrouter()
+	postRouter.HandleFunc("/products", handlers.MakeHttpHandlerFunc(ph.CreateProduct))
+
+	getSpecificRouter := router.Methods("GET").Subrouter()
+	getSpecificRouter.HandleFunc("/products/{id}", handlers.MakeHttpHandlerFunc(ph.GetProductByID))
+
+	//registerUserRouter := router.Methods("GET").Subrouter()
+	//egisterUserRouter.HandleFunc("/", uh.RegisterUser)
+
+	//loginUserRouter := router.Methods("POST").Subrouter()
+	//loginUserRouter.HandleFunc("/", uh.UserLogin)
 	http.ListenAndServe(s.addr, router)
 }
