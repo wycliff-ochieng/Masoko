@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/wycliff-ochieng/cmd/migrate"
 	"github.com/wycliff-ochieng/db"
 )
@@ -71,7 +73,19 @@ func (p *Product) CreateProduct(w http.ResponseWriter, r *http.Request) error {
 	return WriteJSON(w, http.StatusOK, product)
 }
 
-//func (p *Product) CreateProduct(w http.ResponseWriter, r *http.Request) {
-//
-//	p.l.Println("Handle POST products")
-//}
+func (p *Product) GetProductByID(w http.ResponseWriter, r *http.Request) error {
+	p.l.Println("Handling GET product by ID method.....")
+
+	vars := mux.Vars(r)["id"]
+
+	id, err := strconv.Atoi(vars)
+	if err != nil {
+		return err
+	}
+
+	product, err := p.store.GetProductByID(id)
+	if err != nil {
+		return err
+	}
+	return WriteJSON(w, http.StatusOK, product)
+}
