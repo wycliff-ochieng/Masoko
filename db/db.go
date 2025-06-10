@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/wycliff-ochieng/cmd/migrate"
 
@@ -89,4 +90,17 @@ func (p *Postgrestore) ScanIntoTable(rows *sql.Rows) (*migrate.Product, error) {
 		return nil, err
 	}
 	return product, nil
+}
+
+func (p *Postgrestore) GetProductByID(id int) (*migrate.Product, error) {
+	rows, err := p.db.Query("SELECT * FROM products WHERE id = $1", id)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		return p.ScanIntoTable(rows)
+	}
+	return nil, fmt.Errorf("could not find ID %v", err)
+
 }
