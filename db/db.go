@@ -43,7 +43,7 @@ func (p *Postgrestore) CreateProductTable() error {
 	id serial primary key,
 	name varchar(15) not null,
 	price decimal(10,2) not null,
-	description text,
+	description text,'
 	stock int default 0,
 	createdat timestamp,
 	updatedat timestamp
@@ -103,4 +103,12 @@ func (p *Postgrestore) GetProductByID(id int) (*migrate.Product, error) {
 	}
 	return nil, fmt.Errorf("could not find ID %v", err)
 
+}
+
+func (p *Postgrestore) QueryRow(query string, args ...interface{}) *sql.Row {
+	return nil
+}
+
+func (p *Postgrestore) Exec(query string, args ...interface{}) (sql.Result, error) {
+	return nil, nil
 }
