@@ -8,8 +8,8 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/wycliff-ochieng/cmd/migrate"
-	"github.com/wycliff-ochieng/db"
+	"github.com/wycliff-ochieng/product-service/migrate"
+	"github.com/wycliff-ochieng/product-service/db"
 )
 
 type Product struct {

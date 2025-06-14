@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/wycliff-ochieng/db"
-	"github.com/wycliff-ochieng/handlers"
+	"github.com/wycliff-ochieng/product-service/db"
+	"github.com/wycliff-ochieng/product-service/handlers"
 )
 
 type APIServer struct {

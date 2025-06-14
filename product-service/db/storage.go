@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/wycliff-ochieng/cmd/migrate"
+	"github.com/wycliff-ochieng/product-service/migrate"
 	"database/sql"
 )
 

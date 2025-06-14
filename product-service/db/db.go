@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/wycliff-ochieng/cmd/migrate"
+	"github.com/wycliff-ochieng/product-service/migrate"
 
 	_ "github.com/lib/pq"
 )

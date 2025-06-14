@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/wycliff-ochieng/cmd/api"
-	"github.com/wycliff-ochieng/db"
+	"github.com/wycliff-ochieng/product-service/cmd/api"
+	"github.com/wycliff-ochieng/product-service/db"
 )
 
 func main() {
