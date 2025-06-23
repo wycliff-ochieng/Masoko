@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 
@@ -11,6 +12,9 @@ type DBInterface interface {
 	QueryRow(query string, args ...interface{}) *sql.Row
 	Exec(query string, args ...interface{}) (sql.Result, error)
 	Close() error
+	QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row
+	QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error)
+	ExecContext(ctx context.Context, query string, args ...interface{}) (sql.Result, error)
 }
 
 type Postgres struct {
@@ -63,6 +67,8 @@ func (p *Postgres) CreateCartItemTable() error {
 	cartID INTEGER, 
 	productID INTEGER,
 	quantity INTEGER,
+	price NUMERIC(10,2),
+	subtotal NUMERIC(10,2),
 	createdat TIMESTAMP,
 	CONSTRAINT fk_cartID FOREIGN KEY(cartID) REFERENCES carts,
 	CONSTRAINT fk_productID FOREIGN KEY(productID) REFERENCES products
@@ -88,4 +94,15 @@ func (p *Postgres) Exec(query string, args ...interface{}) (sql.Result, error) {
 
 func (p *Postgres) QueryRow(query string, args ...interface{}) *sql.Row {
 	return p.db.QueryRow(query, args...)
+}
+
+func (p *Postgres) QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row {
+	return p.db.QueryRowContext(ctx, query, args...)
+}
+
+func (p *Postgres) QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error) {
+	return p.db.QueryContext(ctx, query, args...)
+}
+func (p *Postgres) ExecContext(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
+	return p.db.ExecContext(ctx, query, args...)
 }
