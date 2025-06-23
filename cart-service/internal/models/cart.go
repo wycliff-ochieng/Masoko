@@ -25,6 +25,10 @@ type CartItem struct {
 	Subtotal  float64
 }
 
+func NewCart(userID uuid.UUID) *Cart {
+	return &Cart{}
+}
+
 func (c *Cart) CalculateCartTotal() {
 
 	var total float64
